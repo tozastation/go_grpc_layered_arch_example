@@ -11,8 +11,8 @@ import (
 // IUserService ...
 type IUserService interface {
 	GetMe(ctx context.Context, token string) (*rpc_user.GetUser, error)
-	SignIn(uID, password string) (string, error)
-	SignUp(user *rpc_user.PostUser) (string, error)
+	SignIn(ctx context.Context, uID, password string) (string, error)
+	SignUp(ctx context.Context, user *rpc_user.PostUser) (string, error)
 }
 
 type userService struct {
@@ -20,8 +20,8 @@ type userService struct {
 }
 
 // NewUserService is ...
-func NewUserService() IUserService {
-	return &userService{nil}
+func NewUserService(repo irepo.IUserRepository) IUserService {
+	return &userService{repo}
 }
 
 func (srv *userService) GetMe(ctx context.Context, token string) (*rpc_user.GetUser, error) {
@@ -29,10 +29,10 @@ func (srv *userService) GetMe(ctx context.Context, token string) (*rpc_user.GetU
 	if err != nil {
 		return nil, err
 	}
-	return user, nil
+	return dbToPostUser(user), nil
 }
 
-func (srv *userService) SignUp(user *rpc_user.PostUser) (string, error) {
+func (srv *userService) SignUp(ctx context.Context, user *rpc_user.PostUser) (string, error) {
 	dbUser, err := postUserToDB(user)
 	if err != nil {
 		return "", err
@@ -44,7 +44,7 @@ func (srv *userService) SignUp(user *rpc_user.PostUser) (string, error) {
 	return token, nil
 }
 
-func (srv *userService) SignIn(uID, password string) (string, error) {
+func (srv *userService) SignIn(ctx context.Context, uID, password string) (string, error) {
 	hashedPass, err := auth.Hashed(password)
 	if err != nil {
 		return "", err
@@ -67,4 +67,11 @@ func postUserToDB(user *rpc_user.PostUser) (*db.User, error) {
 		Password:    password,
 		AccessToken: auth.CreateJWT(user.GetName(), user.GetCityName()),
 	}, nil
+}
+
+func dbToPostUser(user *db.User) *rpc_user.GetUser {
+	return &rpc_user.GetUser{
+		Name:     user.Name,
+		CityName: user.CityName,
+	}
 }

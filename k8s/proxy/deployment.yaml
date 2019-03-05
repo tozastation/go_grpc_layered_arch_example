@@ -1,0 +1,40 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: "envoy"
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: "envoy"
+    spec:
+      volumes:
+        - name: envoy
+          configMap:
+            name: "envoy-config"
+        # - name: tls
+        #   secret:
+        #     secretName: tlssecret
+
+      containers:
+        - name: envoy
+          image: envoyproxy/envoy:6e3633496f5a9412abdca8bac7db6b701ae8ce14
+          command:
+            - "/usr/local/bin/envoy"
+          args:
+            - "--config-path /etc/envoy/envoy.json"
+          resources:
+            limits:
+              memory: 512Mi
+          ports:
+            - containerPort: 15001
+              name: app
+            - containerPort: 8001
+              name: envoy-admin
+          volumeMounts:
+            - name: envoy
+              mountPath: /etc/envoy
+            # - name: tls
+            #   mountPath: /etc/tlssecret
+            #   readOnly: true

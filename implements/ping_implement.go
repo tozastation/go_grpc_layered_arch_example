@@ -8,6 +8,7 @@ import (
 
 // IPingImplement is ...
 type IPingImplement interface {
+	Ping(ctx context.Context, p *rpc_ping.Empty) (*rpc_ping.Pong, error)
 }
 
 type pingImplement struct {
@@ -19,7 +20,7 @@ func NewPingImplement(l *logrus.Logger) IPingImplement {
 	return &pingImplement{l}
 }
 
-func (imp *pingImplement) Pong(ctx context.Context, p *rpc_ping.Empty) (*rpc_ping.Pong, error) {
+func (imp *pingImplement) Ping(ctx context.Context, p *rpc_ping.Empty) (*rpc_ping.Pong, error) {
 	imp.Logger.Infoln("[START] PongRPC is Called from Client")
 	res := rpc_ping.Pong{}
 	res.Reply = "Pong"

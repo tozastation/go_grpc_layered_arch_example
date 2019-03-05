@@ -17,8 +17,8 @@ type weatherService struct {
 }
 
 // NewWeatherService is ...
-func NewWeatherService() IWeatherService {
-	return &weatherService{nil}
+func NewWeatherService(repo irepo.IWeatherRepository) IWeatherService {
+	return &weatherService{repo}
 }
 
 func (srv *weatherService) GetWeather(ctx context.Context, cityName string) (*rpc_weather.Weather, error) {
@@ -26,7 +26,7 @@ func (srv *weatherService) GetWeather(ctx context.Context, cityName string) (*rp
 	if err != nil {
 		return nil, err
 	}
-	return dbWeatherToWeather(dbWeathers[0]), nil
+	return dbWeatherToWeather(dbWeathers), nil
 }
 
 func dbWeatherToWeather(weather *remote.OpenWeather) *rpc_weather.Weather {

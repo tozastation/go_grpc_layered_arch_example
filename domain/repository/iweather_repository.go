@@ -7,5 +7,5 @@ import (
 
 // IWeatherRepository is ...
 type IWeatherRepository interface {
-	FindCurrentWeatherByCityName(ctx context.Context, cityName string) ([]*remote.OpenWeather, error)
+	FindCurrentWeatherByCityName(ctx context.Context, cityName string) (*remote.OpenWeather, error)
 }

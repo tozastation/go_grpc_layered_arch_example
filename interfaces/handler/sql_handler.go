@@ -14,7 +14,7 @@ func OpenDBConnection() *sql.DB {
 	db, err := sql.Open(vender, connectionString)
 	err = db.Ping()
 	if err != nil {
-		fmt.Println("Failed to connected DB:", err)
+		panic(err)
 	}
 	fmt.Println("Establised DB Connection!!")
 	return db

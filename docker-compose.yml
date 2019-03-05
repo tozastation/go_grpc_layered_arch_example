@@ -1,0 +1,22 @@
+version: '3'
+services:
+    db:
+      build: ./mssql_container
+      ports:
+        - 1433:1433
+      environment:
+        - ACCEPT_EULA=Y
+        - SA_PASSWORD=Test@1234
+        - MSSQL_PID=Express
+        - MSSQL_LCID=1041
+        - MSSQL_COLLATION=Japanese_CI_AS
+      volumes:
+        - ./mssql_container/sql:/init-data
+        - ./mssql_container/start-up.sh:/start-up.sh
+      command: "sh -c '/start-up.sh & /opt/mssql/bin/sqlservr;'"
+    api:
+      build: .
+      stdin_open: true
+      tty: true
+      ports:
+        - 3001:3001
