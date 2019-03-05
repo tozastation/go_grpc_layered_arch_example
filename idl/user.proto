@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+package user;
+
+option go_package = "github.com/tozastation/gRPC-Training-Golang/interfaces/rpc/user";
+
+service Users{
+    rpc Get (GetRequest) returns (GetResponse) {}
+    rpc Post (PostRequest) returns (PostResponse) {}
+    rpc Login (LoginRequest) returns (LoginResponse) {}
+}
+
+message PostUser {
+    // tozastation
+    string UserID = 1; 
+    // Hakodate
+    string CityName = 2;
+    // test
+    string Password = 3;
+    // RyoTozawa
+    string Name = 4;
+}
+
+message GetUser {
+    string UserID = 1;
+    string CityName = 2;
+    string Name = 3;
+}
+
+message GetRequest {
+    string Token = 1;
+}
+
+message GetResponse {
+    GetUser User = 1;
+}
+
+message LoginRequest {
+    string UserID = 1;
+    string Password = 2;
+}
+message LoginResponse {
+    string CityName = 1;
+}
+
+message PostRequest {
+    PostUser User = 1;
+}
+
+message PostResponse {
+    // string Token = 1;
+    string CityName = 1;
+}
