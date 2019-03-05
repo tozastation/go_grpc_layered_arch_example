@@ -7,3 +7,10 @@
 - `go install github.com/golang/protobuf/protoc-gen-go`
 ### コードの自動生成
 - `sh protoc.sh`
+## 実行
+### Docker
+- `docker-compose build; docker-compose up db`
+> DBが立ち上がったら
+- `docker-compose up api`
+### Kubernetes
+- `kubectl create -f k8s`
