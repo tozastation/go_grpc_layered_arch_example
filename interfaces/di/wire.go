@@ -8,12 +8,11 @@ import (
 	"github.com/tozastation/gRPC-Training-Golang/interfaces/handler"
 )
 
-var conn = handler.OpenDBConnection()
 var logger = logrus.New()
 
 // InitializeUser is ...
 func InitializeUser() implements.IUserImplement {
-	repo := mssql.NewUserRepository(conn)
+	repo := mssql.NewUserRepository(handler.OpenDBConnection())
 	srv := service.NewUserService(repo)
 	imp := implements.NewUserImplement(srv, logger)
 	return imp

@@ -2,7 +2,7 @@ package mssql
 
 import (
 	"context"
-	"encoding/json"
+	"fmt"
 	irepo "github.com/tozastation/gRPC-Training-Golang/domain/repository"
 	"github.com/tozastation/gRPC-Training-Golang/infrastructure/persistence/model/remote"
 	"io/ioutil"
@@ -21,10 +21,9 @@ func NewWeatherRepository() irepo.IWeatherRepository {
 
 // FindCurrentWeatherByCityName is ...
 func (repo *WeatherRepository) FindCurrentWeatherByCityName(ctx context.Context, cityName string) (*remote.OpenWeather, error) {
-	openWeather := remote.OpenWeather{}
 	baseURL := os.Getenv("OPENWEATHER_URL")
 	credential := os.Getenv("OPENWEATHER_CREDENTIAL")
-	param := "?=" + cityName
+	param := "?q=" + cityName
 	res, err := http.Get(baseURL + param + credential)
 	if err != nil {
 		return nil, err
@@ -34,7 +33,8 @@ func (repo *WeatherRepository) FindCurrentWeatherByCityName(ctx context.Context,
 	if err != nil {
 		return nil, err
 	}
-	err = json.Unmarshal(body, &openWeather)
+	openWeather, err := remote.UnmarshalOpenWeather(body)
+	fmt.Println(string(body))
 	if err != nil {
 		return nil, err
 	}

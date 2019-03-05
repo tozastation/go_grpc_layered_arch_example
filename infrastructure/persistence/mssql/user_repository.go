@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"errors"
+	"fmt"
 	irepo "github.com/tozastation/gRPC-Training-Golang/domain/repository"
 	"github.com/tozastation/gRPC-Training-Golang/infrastructure/persistence/model/db"
 )
@@ -29,14 +30,14 @@ func (repo *UserRepository) FindUserByUserToken(ctx context.Context, token strin
 
 // CreateUser is ...
 func (repo *UserRepository) CreateUser(user *db.User) (string, error) {
-	stmt, err := repo.DB.Prepare("INSERT INTO [Weather].[dbo].[Users](Name, CityName, Password, AccessToken) VALUES(?, ?, ?, ?)")
+	stmt, err := repo.DB.Prepare("INSERT INTO [Weather].[dbo].[Users](CityName, Name, Password, AccessToken) VALUES(?, ?, ?, ?)")
 	if err != nil {
-		return "", nil
+		return "", err
 	}
 	defer stmt.Close()
 	_, err = stmt.Exec(user.Name, user.CityName, user.Password, user.AccessToken)
 	if err != nil {
-		return "", nil
+		return "", err
 	}
 	return user.AccessToken, nil
 }
@@ -44,9 +45,11 @@ func (repo *UserRepository) CreateUser(user *db.User) (string, error) {
 // Login is ...
 func (repo *UserRepository) Login(uID string, password []byte) (string, error) {
 	dbUser := db.User{}
-	if err := repo.DB.QueryRow("SELECT CityName, Password FROM [Weather].[dbo].[Users] WHERE Name = "+uID).Scan(&dbUser.CityName, dbUser.Password); err != nil {
+	if err := repo.DB.QueryRow("SELECT CityName, Password FROM [Weather].[dbo].[Users] WHERE Id = "+uID).Scan(&dbUser.CityName, &dbUser.Password); err != nil {
 		return "", err
 	}
+	fmt.Println(string(password))
+	fmt.Println(string(dbUser.Password))
 	if string(dbUser.Password) != string(password) {
 		err := errors.New("Not Found User")
 		return "", err
