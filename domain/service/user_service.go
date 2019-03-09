@@ -29,11 +29,11 @@ func (srv *userService) GetMe(ctx context.Context, token string) (*rpc_user.GetU
 	if err != nil {
 		return nil, err
 	}
-	return dbToPostUser(user), nil
+	return DBToPostUser(user), nil
 }
 
 func (srv *userService) SignUp(ctx context.Context, user *rpc_user.PostUser) (string, error) {
-	dbUser, err := postUserToDB(user)
+	dbUser, err := PostUserToDB(user)
 	if err != nil {
 		return "", err
 	}
@@ -56,7 +56,12 @@ func (srv *userService) SignIn(ctx context.Context, uID, password string) (strin
 	return token, nil
 }
 
-func postUserToDB(user *rpc_user.PostUser) (*db.User, error) {
+// PostUserToDB is ... 
+// Name:        user.GetName(),
+// CityName:    user.GetCityName(),
+// Password:    password,
+// AccessToken: auth.CreateJWT(user.GetName(), user.GetCityName()),
+func PostUserToDB(user *rpc_user.PostUser) (*db.User, error) {
 	password, err := auth.Hashed(user.GetPassword())
 	if err != nil {
 		return nil, err
@@ -69,7 +74,8 @@ func postUserToDB(user *rpc_user.PostUser) (*db.User, error) {
 	}, nil
 }
 
-func dbToPostUser(user *db.User) *rpc_user.GetUser {
+// DBToPostUser is ...
+func DBToPostUser(user *db.User) *rpc_user.GetUser {
 	return &rpc_user.GetUser{
 		Name:     user.Name,
 		CityName: user.CityName,
