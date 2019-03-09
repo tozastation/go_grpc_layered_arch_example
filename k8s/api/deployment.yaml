@@ -11,7 +11,7 @@ spec:
     spec:
       containers:
         - name: grpc-server
-          image: 
+          image: tozastation/grpc_training_golang:latest
           ports:
             - containerPort: 3001
           # env:
