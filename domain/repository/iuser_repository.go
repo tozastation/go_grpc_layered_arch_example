@@ -9,5 +9,5 @@ import (
 type IUserRepository interface {
 	FindUserByUserToken(ctx context.Context, token string) (*db.User, error)
 	CreateUser(user *db.User) (string, error)
-	Login(uID string, password []byte) (string, error)
+	Login(uID, password string) (string, error)
 }

@@ -3,10 +3,9 @@ package mssql
 import (
 	"context"
 	"database/sql"
-	"errors"
-	"fmt"
 	irepo "github.com/tozastation/gRPC-Training-Golang/domain/repository"
 	"github.com/tozastation/gRPC-Training-Golang/infrastructure/persistence/model/db"
+	"github.com/tozastation/gRPC-Training-Golang/interfaces/auth"
 )
 
 // UserRepository is
@@ -43,15 +42,13 @@ func (repo *UserRepository) CreateUser(user *db.User) (string, error) {
 }
 
 // Login is ...
-func (repo *UserRepository) Login(uID string, password []byte) (string, error) {
+func (repo *UserRepository) Login(uID, password string) (string, error) {
 	dbUser := db.User{}
 	if err := repo.DB.QueryRow("SELECT CityName, Password FROM [Weather].[dbo].[Users] WHERE Id = "+uID).Scan(&dbUser.CityName, &dbUser.Password); err != nil {
 		return "", err
 	}
-	fmt.Println(string(password))
-	fmt.Println(string(dbUser.Password))
-	if string(dbUser.Password) != string(password) {
-		err := errors.New("Not Found User")
+	err := auth.CheckHash(dbUser.Password, password)
+	if err != nil {
 		return "", err
 	}
 	return dbUser.CityName, nil

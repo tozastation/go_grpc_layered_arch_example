@@ -45,18 +45,14 @@ func (srv *userService) SignUp(ctx context.Context, user *rpc_user.PostUser) (st
 }
 
 func (srv *userService) SignIn(ctx context.Context, uID, password string) (string, error) {
-	hashedPass, err := auth.Hashed(password)
-	if err != nil {
-		return "", err
-	}
-	token, err := srv.IUserRepository.Login(uID, hashedPass)
+	token, err := srv.IUserRepository.Login(uID, password)
 	if err != nil {
 		return "", err
 	}
 	return token, nil
 }
 
-// PostUserToDB is ... 
+// PostUserToDB is ...
 // Name:        user.GetName(),
 // CityName:    user.GetCityName(),
 // Password:    password,
