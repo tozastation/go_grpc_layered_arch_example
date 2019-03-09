@@ -5,7 +5,6 @@ import (
 	rpc_ping "github.com/tozastation/gRPC-Training-Golang/interfaces/rpc/ping"
 	rpc_user "github.com/tozastation/gRPC-Training-Golang/interfaces/rpc/user"
 	rpc_weather "github.com/tozastation/gRPC-Training-Golang/interfaces/rpc/weather"
-	"google.golang.org/grpc"
 	"log"
 	"net"
 )
@@ -15,9 +14,9 @@ func main() {
 	if err != nil {
 		log.Fatalln(err)
 	}
-	server := grpc.NewServer()
 
 	// Dependency Injection
+	server := di.InitializeServer()
 	weather := di.InitializeWeather()
 	ping := di.InitializePing()
 	user := di.InitializeUser()
