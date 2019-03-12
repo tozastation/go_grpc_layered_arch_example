@@ -1,6 +1,7 @@
 package di
 
 import (
+	"fmt"
 	"github.com/grpc-ecosystem/go-grpc-middleware"
 	grpc_auth "github.com/grpc-ecosystem/go-grpc-middleware/auth"
 	grpc_logrus "github.com/grpc-ecosystem/go-grpc-middleware/logging/logrus"
@@ -25,6 +26,7 @@ func InitializeUser() implements.IUserImplement {
 	repo := mssql.NewUserRepository(handler.DB, repoError)
 	srv := service.NewUserService(repo)
 	imp := implements.NewUserImplement(srv, logger)
+	fmt.Println("[Done] User Injection")
 	return imp
 }
 
@@ -33,12 +35,14 @@ func InitializeWeather() implements.IWeatherImplement {
 	repo := mssql.NewWeatherRepository()
 	srv := service.NewWeatherService(repo)
 	imp := implements.NewWeatherImplement(srv, logger)
+	fmt.Println("[Done] Weather Injection")
 	return imp
 }
 
 // InitializePing is ...
 func InitializePing() implements.IPingImplement {
 	imp := implements.NewPingImplement(logger)
+	fmt.Println("[Done] Ping Injection")
 	return imp
 }
 
@@ -64,5 +68,6 @@ func InitializeServer() *grpc.Server {
 			grpc_logrus.UnaryServerInterceptor(logger, opts...),
 		)),
 	)
+	fmt.Println("[Done] Initialize gRPC Server")
 	return server
 }

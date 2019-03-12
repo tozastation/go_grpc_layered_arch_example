@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/tozastation/go-grpc-ddd-example/interfaces/di"
 	"github.com/tozastation/go-grpc-ddd-example/interfaces/handler"
 	rpc_ping "github.com/tozastation/go-grpc-ddd-example/interfaces/rpc/ping"
@@ -29,5 +30,6 @@ func main() {
 	rpc_user.RegisterUsersServer(server, user)
 	rpc_ping.RegisterCheckServer(server, ping)
 	rpc_weather.RegisterWeathersServer(server, weather)
+	fmt.Println("Listen on 3001")
 	server.Serve(listenPort)
 }
