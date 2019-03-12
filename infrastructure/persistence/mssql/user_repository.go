@@ -3,6 +3,7 @@ package mssql
 import (
 	"context"
 	"database/sql"
+	"fmt"
 	irepo "github.com/tozastation/gRPC-Training-Golang/domain/repository"
 	"github.com/tozastation/gRPC-Training-Golang/infrastructure/persistence/model/db"
 	"github.com/tozastation/gRPC-Training-Golang/interfaces/auth"
@@ -21,8 +22,9 @@ func NewUserRepository(Conn *sql.DB) irepo.IUserRepository {
 // FindUserByUserToken is ...
 func (repo *UserRepository) FindUserByUserToken(ctx context.Context, token string) (*db.User, error) {
 	dbUser := db.User{}
-	if err := repo.DB.QueryRow("SELECT CityName FROM [Weather].[dbo].[Users] WHERE AccessToken = " + token).Scan(&dbUser.CityName); err != nil {
-		return nil, err
+	err := repo.DB.QueryRow("SELECT CityName FROM [Weather].[dbo].[Users] WHERE AccessToken = " + token).Scan(&dbUser.CityName)
+	if err != nil {
+		return nil, fmt.Errorf("select query failed: %v", err)
 	}
 	return &dbUser, nil
 }
@@ -31,12 +33,17 @@ func (repo *UserRepository) FindUserByUserToken(ctx context.Context, token strin
 func (repo *UserRepository) CreateUser(user *db.User) (string, error) {
 	stmt, err := repo.DB.Prepare("INSERT INTO [Weather].[dbo].[Users](CityName, Name, Password, AccessToken) VALUES(?, ?, ?, ?)")
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("prepare query failed: %v", err)
 	}
-	defer stmt.Close()
+	defer func() {
+		err := stmt.Close()
+		if err != nil {
+			fmt.Println("can't close statement!!", err)
+		}
+	}()
 	_, err = stmt.Exec(user.Name, user.CityName, user.Password, user.AccessToken)
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("execute query failed: %v", err)
 	}
 	return user.AccessToken, nil
 }
@@ -44,12 +51,13 @@ func (repo *UserRepository) CreateUser(user *db.User) (string, error) {
 // Login is ...
 func (repo *UserRepository) Login(uID, password string) (string, error) {
 	dbUser := db.User{}
-	if err := repo.DB.QueryRow("SELECT CityName, Password FROM [Weather].[dbo].[Users] WHERE Id = "+uID).Scan(&dbUser.CityName, &dbUser.Password); err != nil {
-		return "", err
-	}
-	err := auth.CheckHash(dbUser.Password, password)
+	err := repo.DB.QueryRow("SELECT CityName, Password FROM [Weather].[dbo].[Users] WHERE Id = "+uID).Scan(&dbUser.CityName, &dbUser.Password)
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("select query failed: %v", err)
+	}
+	err = auth.CheckHash(dbUser.Password, password)
+	if err != nil {
+		return "", fmt.Errorf("not correct password: %v", err)
 	}
 	return dbUser.CityName, nil
 }
