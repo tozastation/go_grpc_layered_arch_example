@@ -3,8 +3,8 @@ package mssql
 import (
 	"context"
 	"fmt"
-	irepo "github.com/tozastation/gRPC-Training-Golang/domain/repository"
-	"github.com/tozastation/gRPC-Training-Golang/infrastructure/persistence/model/remote"
+	irepo "github.com/tozastation/go-grpc-ddd-example/domain/repository"
+	"github.com/tozastation/go-grpc-ddd-example/infrastructure/persistence/model/remote"
 	"io/ioutil"
 	"net/http"
 	"os"

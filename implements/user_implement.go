@@ -3,8 +3,8 @@ package implements
 import (
 	"context"
 	"github.com/sirupsen/logrus"
-	isrv "github.com/tozastation/gRPC-Training-Golang/domain/service"
-	rpc_user "github.com/tozastation/gRPC-Training-Golang/interfaces/rpc/user"
+	isrv "github.com/tozastation/go-grpc-ddd-example/domain/service"
+	rpc_user "github.com/tozastation/go-grpc-ddd-example/interfaces/rpc/user"
 )
 
 // IUserImplement is ...

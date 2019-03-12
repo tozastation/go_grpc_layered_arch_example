@@ -3,8 +3,8 @@ package implements
 import (
 	"context"
 	"github.com/sirupsen/logrus"
-	isrv "github.com/tozastation/gRPC-Training-Golang/domain/service"
-	rpc_weather "github.com/tozastation/gRPC-Training-Golang/interfaces/rpc/weather"
+	isrv "github.com/tozastation/go-grpc-ddd-example/domain/service"
+	rpc_weather "github.com/tozastation/go-grpc-ddd-example/interfaces/rpc/weather"
 )
 
 // IWeatherImplement is ...

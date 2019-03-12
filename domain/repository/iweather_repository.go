@@ -2,7 +2,7 @@ package repository
 
 import (
 	"context"
-	"github.com/tozastation/gRPC-Training-Golang/infrastructure/persistence/model/remote"
+	"github.com/tozastation/go-grpc-ddd-example/infrastructure/persistence/model/remote"
 )
 
 // IWeatherRepository is ...

@@ -4,8 +4,8 @@ import (
 	"context"
 	"github.com/golang/mock/gomock"
 	"github.com/google/go-cmp/cmp"
-	mock "github.com/tozastation/gRPC-Training-Golang/implements/mock"
-	rpc_weather "github.com/tozastation/gRPC-Training-Golang/interfaces/rpc/weather"
+	mock "github.com/tozastation/go-grpc-ddd-example/implements/mock"
+	rpc_weather "github.com/tozastation/go-grpc-ddd-example/interfaces/rpc/weather"
 	"testing"
 )
 

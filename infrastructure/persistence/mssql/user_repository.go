@@ -4,19 +4,21 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	irepo "github.com/tozastation/gRPC-Training-Golang/domain/repository"
-	"github.com/tozastation/gRPC-Training-Golang/infrastructure/persistence/model/db"
-	"github.com/tozastation/gRPC-Training-Golang/interfaces/auth"
+	irepo "github.com/tozastation/go-grpc-ddd-example/domain/repository"
+	"github.com/tozastation/go-grpc-ddd-example/infrastructure/persistence/model/db"
+	"github.com/tozastation/go-grpc-ddd-example/interfaces/auth"
+	"github.com/tozastation/go-grpc-ddd-example/interfaces/error/irepoerror"
 )
 
 // UserRepository is
 type UserRepository struct {
 	*sql.DB
+	irepoerror.IRepositoryError
 }
 
 // NewUserRepository is ...
-func NewUserRepository(Conn *sql.DB) irepo.IUserRepository {
-	return &UserRepository{Conn}
+func NewUserRepository(Conn *sql.DB, e irepoerror.IRepositoryError) irepo.IUserRepository {
+	return &UserRepository{Conn, e}
 }
 
 // FindUserByUserToken is ...
@@ -24,7 +26,7 @@ func (repo *UserRepository) FindUserByUserToken(ctx context.Context, token strin
 	dbUser := db.User{}
 	err := repo.DB.QueryRow("SELECT CityName FROM [Weather].[dbo].[Users] WHERE AccessToken = " + token).Scan(&dbUser.CityName)
 	if err != nil {
-		return nil, fmt.Errorf("select query failed: %v", err)
+		return nil, repo.IRepositoryError.SelectFailed(err)
 	}
 	return &dbUser, nil
 }
@@ -33,7 +35,7 @@ func (repo *UserRepository) FindUserByUserToken(ctx context.Context, token strin
 func (repo *UserRepository) CreateUser(user *db.User) (string, error) {
 	stmt, err := repo.DB.Prepare("INSERT INTO [Weather].[dbo].[Users](CityName, Name, Password, AccessToken) VALUES(?, ?, ?, ?)")
 	if err != nil {
-		return "", fmt.Errorf("prepare query failed: %v", err)
+		return "", repo.IRepositoryError.PrepareStatementFailed(err)
 	}
 	defer func() {
 		err := stmt.Close()
@@ -43,7 +45,7 @@ func (repo *UserRepository) CreateUser(user *db.User) (string, error) {
 	}()
 	_, err = stmt.Exec(user.Name, user.CityName, user.Password, user.AccessToken)
 	if err != nil {
-		return "", fmt.Errorf("execute query failed: %v", err)
+		return "", repo.IRepositoryError.ExecuteQueryFailed(err)
 	}
 	return user.AccessToken, nil
 }

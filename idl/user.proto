@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package user;
 
-option go_package = "github.com/tozastation/gRPC-Training-Golang/interfaces/rpc/user";
+option go_package = "github.com/tozastation/go-grpc-ddd-example/interfaces/rpc/user";
 
 service Users{
     rpc Get (GetRequest) returns (GetResponse) {}

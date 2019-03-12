@@ -2,7 +2,7 @@ package repository
 
 import (
 	"context"
-	"github.com/tozastation/gRPC-Training-Golang/infrastructure/persistence/model/db"
+	"github.com/tozastation/go-grpc-ddd-example/infrastructure/persistence/model/db"
 )
 
 // IUserRepository is ...

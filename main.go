@@ -1,10 +1,11 @@
 package main
 
 import (
-	"github.com/tozastation/gRPC-Training-Golang/interfaces/di"
-	rpc_ping "github.com/tozastation/gRPC-Training-Golang/interfaces/rpc/ping"
-	rpc_user "github.com/tozastation/gRPC-Training-Golang/interfaces/rpc/user"
-	rpc_weather "github.com/tozastation/gRPC-Training-Golang/interfaces/rpc/weather"
+	"github.com/tozastation/go-grpc-ddd-example/interfaces/di"
+	"github.com/tozastation/go-grpc-ddd-example/interfaces/handler"
+	rpc_ping "github.com/tozastation/go-grpc-ddd-example/interfaces/rpc/ping"
+	rpc_user "github.com/tozastation/go-grpc-ddd-example/interfaces/rpc/user"
+	rpc_weather "github.com/tozastation/go-grpc-ddd-example/interfaces/rpc/weather"
 	"log"
 	"net"
 )
@@ -14,7 +15,11 @@ func main() {
 	if err != nil {
 		log.Fatalln(err)
 	}
-
+	// Establish DB Connection
+	err = handler.OpenDBConnection()
+	if err != nil {
+		panic(err)
+	}
 	// Dependency Injection
 	server := di.InitializeServer()
 	weather := di.InitializeWeather()

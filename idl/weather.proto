@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package weather;
 
-option go_package = "github.com/tozastation/gRPC-Training-Golang/interfaces/rpc/weather";
+option go_package = "github.com/tozastation/go-grpc-ddd-example/interfaces/rpc/weather";
 
 service Weathers{
     rpc Get (GetRequest) returns (GetResponse) {}

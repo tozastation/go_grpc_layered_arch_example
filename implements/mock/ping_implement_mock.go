@@ -7,7 +7,7 @@ package mock
 import (
 	context "context"
 	gomock "github.com/golang/mock/gomock"
-	ping "github.com/tozastation/gRPC-Training-Golang/interfaces/rpc/ping"
+	ping "github.com/tozastation/go-grpc-ddd-example/interfaces/rpc/ping"
 	reflect "reflect"
 )
 

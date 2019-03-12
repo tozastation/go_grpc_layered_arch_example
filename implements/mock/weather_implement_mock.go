@@ -7,7 +7,7 @@ package mock
 import (
 	context "context"
 	gomock "github.com/golang/mock/gomock"
-	weather "github.com/tozastation/gRPC-Training-Golang/interfaces/rpc/weather"
+	weather "github.com/tozastation/go-grpc-ddd-example/interfaces/rpc/weather"
 	reflect "reflect"
 )
 

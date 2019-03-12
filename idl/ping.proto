@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package ping;
 
-option go_package = "github.com/tozastation/gRPC-Training-Golang/interfaces/rpc/ping";
+option go_package = "github.com/tozastation/go-grpc-ddd-example/interfaces/rpc/ping";
 
 service Check{
     rpc Ping (Empty) returns (Pong) {}

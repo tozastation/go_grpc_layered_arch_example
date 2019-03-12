@@ -2,10 +2,10 @@ package service
 
 import (
 	"context"
-	irepo "github.com/tozastation/gRPC-Training-Golang/domain/repository"
-	"github.com/tozastation/gRPC-Training-Golang/infrastructure/persistence/model/db"
-	"github.com/tozastation/gRPC-Training-Golang/interfaces/auth"
-	rpc_user "github.com/tozastation/gRPC-Training-Golang/interfaces/rpc/user"
+	irepo "github.com/tozastation/go-grpc-ddd-example/domain/repository"
+	"github.com/tozastation/go-grpc-ddd-example/infrastructure/persistence/model/db"
+	"github.com/tozastation/go-grpc-ddd-example/interfaces/auth"
+	rpc_user "github.com/tozastation/go-grpc-ddd-example/interfaces/rpc/user"
 )
 
 // IUserService ...

@@ -3,8 +3,8 @@ package test
 import (
 	"context"
 	"github.com/golang/mock/gomock"
-	mock "github.com/tozastation/gRPC-Training-Golang/implements/mock"
-	rpc_ping "github.com/tozastation/gRPC-Training-Golang/interfaces/rpc/ping"
+	mock "github.com/tozastation/go-grpc-ddd-example/implements/mock"
+	rpc_ping "github.com/tozastation/go-grpc-ddd-example/interfaces/rpc/ping"
 	"testing"
 )
 

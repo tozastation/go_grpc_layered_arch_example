@@ -7,7 +7,7 @@ package mock
 import (
 	context "context"
 	gomock "github.com/golang/mock/gomock"
-	remote "github.com/tozastation/gRPC-Training-Golang/infrastructure/persistence/model/remote"
+	remote "github.com/tozastation/go-grpc-ddd-example/infrastructure/persistence/model/remote"
 	reflect "reflect"
 )
 

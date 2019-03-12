@@ -3,7 +3,7 @@ package implements
 import (
 	"context"
 	"github.com/sirupsen/logrus"
-	rpc_ping "github.com/tozastation/gRPC-Training-Golang/interfaces/rpc/ping"
+	rpc_ping "github.com/tozastation/go-grpc-ddd-example/interfaces/rpc/ping"
 )
 
 // IPingImplement is ...

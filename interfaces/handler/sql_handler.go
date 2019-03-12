@@ -7,15 +7,18 @@ import (
 	"os"
 )
 
+// DB is .
+var DB *sql.DB
+
 // OpenDBConnection is ...
-func OpenDBConnection() *sql.DB {
+func OpenDBConnection() error {
 	vender := os.Getenv("VENDER")
 	connectionString := os.Getenv("CONNECTION_STRING")
-	db, err := sql.Open(vender, connectionString)
-	err = db.Ping()
+	DB, err := sql.Open(vender, connectionString)
+	err = DB.Ping()
 	if err != nil {
-		panic(err)
+		return err
 	}
 	fmt.Println("Establised DB Connection!!")
-	return db
+	return nil
 }

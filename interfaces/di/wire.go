@@ -6,21 +6,23 @@ import (
 	grpc_logrus "github.com/grpc-ecosystem/go-grpc-middleware/logging/logrus"
 	"github.com/grpc-ecosystem/go-grpc-middleware/tags"
 	"github.com/sirupsen/logrus"
-	"github.com/tozastation/gRPC-Training-Golang/domain/service"
-	"github.com/tozastation/gRPC-Training-Golang/implements"
-	"github.com/tozastation/gRPC-Training-Golang/infrastructure/persistence/mssql"
-	"github.com/tozastation/gRPC-Training-Golang/interfaces/handler"
-	"github.com/tozastation/gRPC-Training-Golang/interfaces/middleware"
+	"github.com/tozastation/go-grpc-ddd-example/domain/service"
+	"github.com/tozastation/go-grpc-ddd-example/implements"
+	"github.com/tozastation/go-grpc-ddd-example/infrastructure/persistence/mssql"
+	custom_error "github.com/tozastation/go-grpc-ddd-example/interfaces/error"
+	"github.com/tozastation/go-grpc-ddd-example/interfaces/handler"
+	"github.com/tozastation/go-grpc-ddd-example/interfaces/middleware"
 	"google.golang.org/grpc"
 	"os"
 	"time"
 )
 
 var logger = logrus.New()
+var repoError = custom_error.NewRepositoryError()
 
 // InitializeUser is ...
 func InitializeUser() implements.IUserImplement {
-	repo := mssql.NewUserRepository(handler.OpenDBConnection())
+	repo := mssql.NewUserRepository(handler.DB, repoError)
 	srv := service.NewUserService(repo)
 	imp := implements.NewUserImplement(srv, logger)
 	return imp

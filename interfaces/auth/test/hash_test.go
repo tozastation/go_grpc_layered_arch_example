@@ -2,10 +2,9 @@ package test
 
 import (
 	"fmt"
-	srv "github.com/tozastation/gRPC-Training-Golang/domain/service"
-	//model "github.com/tozastation/gRPC-Training-Golang/infrastructure/persistence/model/db"
-	"github.com/tozastation/gRPC-Training-Golang/interfaces/auth"
-	rpc_user "github.com/tozastation/gRPC-Training-Golang/interfaces/rpc/user"
+	srv "github.com/tozastation/go-grpc-ddd-example/domain/service"
+	"github.com/tozastation/go-grpc-ddd-example/interfaces/auth"
+	rpc_user "github.com/tozastation/go-grpc-ddd-example/interfaces/rpc/user"
 	"testing"
 )
 
