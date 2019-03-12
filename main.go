@@ -17,7 +17,7 @@ func main() {
 		log.Fatalln(err)
 	}
 	// Establish DB Connection
-	err = handler.OpenDBConnection()
+	handler.DB, err = handler.OpenDBConnection()
 	if err != nil {
 		panic(err)
 	}

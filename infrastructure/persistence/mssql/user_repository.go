@@ -8,26 +8,32 @@ import (
 	"github.com/tozastation/go-grpc-ddd-example/infrastructure/persistence/model/db"
 	"github.com/tozastation/go-grpc-ddd-example/interfaces/auth"
 	"github.com/tozastation/go-grpc-ddd-example/interfaces/error/irepoerror"
+	"github.com/tozastation/go-grpc-ddd-example/interfaces/timer/itimer"
 )
 
 // UserRepository is
 type UserRepository struct {
 	*sql.DB
 	irepoerror.IRepositoryError
+	itimer.ITimer
 }
 
 // NewUserRepository is ...
-func NewUserRepository(Conn *sql.DB, e irepoerror.IRepositoryError) irepo.IUserRepository {
-	return &UserRepository{Conn, e}
+func NewUserRepository(Conn *sql.DB, e irepoerror.IRepositoryError, t itimer.ITimer) irepo.IUserRepository {
+	return &UserRepository{Conn, e, t}
 }
 
 // FindUserByUserToken is ...
 func (repo *UserRepository) FindUserByUserToken(ctx context.Context, token string) (*db.User, error) {
 	dbUser := db.User{}
+	start := repo.ITimer.Start()
 	err := repo.DB.QueryRow("SELECT CityName FROM [Weather].[dbo].[Users] WHERE AccessToken = " + token).Scan(&dbUser.CityName)
 	if err != nil {
 		return nil, repo.IRepositoryError.SelectFailed(err)
 	}
+	queryCTX := "SELECT CityName FROM [Weather].[dbo].[Users]"
+	end := repo.ITimer.End()
+	repo.ITimer.Result(queryCTX, start, end)
 	return &dbUser, nil
 }
 
@@ -53,10 +59,14 @@ func (repo *UserRepository) CreateUser(user *db.User) (string, error) {
 // Login is ...
 func (repo *UserRepository) Login(uID, password string) (string, error) {
 	dbUser := db.User{}
+	start := repo.ITimer.Start()
 	err := repo.DB.QueryRow("SELECT CityName, Password FROM [Weather].[dbo].[Users] WHERE Id = "+uID).Scan(&dbUser.CityName, &dbUser.Password)
 	if err != nil {
 		return "", fmt.Errorf("select query failed: %v", err)
 	}
+	end := repo.ITimer.End()
+	queryCTX := "SELECT CityName, Password FROM [Weather].[dbo].[Users]"
+	repo.ITimer.Result(queryCTX, start, end)
 	err = auth.CheckHash(dbUser.Password, password)
 	if err != nil {
 		return "", fmt.Errorf("not correct password: %v", err)

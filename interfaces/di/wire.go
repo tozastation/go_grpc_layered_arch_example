@@ -13,6 +13,7 @@ import (
 	custom_error "github.com/tozastation/go-grpc-ddd-example/interfaces/error"
 	"github.com/tozastation/go-grpc-ddd-example/interfaces/handler"
 	"github.com/tozastation/go-grpc-ddd-example/interfaces/middleware"
+	"github.com/tozastation/go-grpc-ddd-example/interfaces/timer"
 	"google.golang.org/grpc"
 	"os"
 	"time"
@@ -20,10 +21,11 @@ import (
 
 var logger = logrus.New()
 var repoError = custom_error.NewRepositoryError()
+var timeCount = timer.NewTimer()
 
 // InitializeUser is ...
 func InitializeUser() implements.IUserImplement {
-	repo := mssql.NewUserRepository(handler.DB, repoError)
+	repo := mssql.NewUserRepository(handler.DB, repoError, timeCount)
 	srv := service.NewUserService(repo)
 	imp := implements.NewUserImplement(srv, logger)
 	fmt.Println("[Done] User Injection")

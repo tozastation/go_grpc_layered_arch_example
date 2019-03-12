@@ -11,14 +11,14 @@ import (
 var DB *sql.DB
 
 // OpenDBConnection is ...
-func OpenDBConnection() error {
+func OpenDBConnection() (*sql.DB, error) {
 	vender := os.Getenv("VENDER")
 	connectionString := os.Getenv("CONNECTION_STRING")
-	DB, err := sql.Open(vender, connectionString)
-	err = DB.Ping()
+	db, err := sql.Open(vender, connectionString)
+	err = db.Ping()
 	if err != nil {
-		return err
+		return nil, err
 	}
 	fmt.Println("Establised DB Connection!!")
-	return nil
+	return db, nil
 }
