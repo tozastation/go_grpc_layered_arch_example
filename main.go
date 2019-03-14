@@ -17,17 +17,17 @@ func main() {
 		log.Fatalln(err)
 	}
 	// Establish DB Connection
-	handler.DB, err = handler.OpenDBConnection()
-	if err != nil {
-		panic(err)
-	}
+	// handler.DB, err = handler.OpenDBConnection()
+	// if err != nil {
+	// 	panic(err)
+	// }
 	// Dependency Injection
 	server := di.InitializeServer()
 	weather := di.InitializeWeather()
 	ping := di.InitializePing()
-	user := di.InitializeUser()
+	//user := di.InitializeUser()
 	// register RPC
-	rpc_user.RegisterUsersServer(server, user)
+	//rpc_user.RegisterUsersServer(server, user)
 	rpc_ping.RegisterCheckServer(server, ping)
 	rpc_weather.RegisterWeathersServer(server, weather)
 	fmt.Println("Listen on 3001")
