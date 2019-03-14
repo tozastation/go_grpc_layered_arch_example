@@ -3,9 +3,9 @@ package main
 import (
 	"fmt"
 	"github.com/tozastation/go-grpc-ddd-example/interfaces/di"
-	"github.com/tozastation/go-grpc-ddd-example/interfaces/handler"
+	//"github.com/tozastation/go-grpc-ddd-example/interfaces/handler"
 	rpc_ping "github.com/tozastation/go-grpc-ddd-example/interfaces/rpc/ping"
-	rpc_user "github.com/tozastation/go-grpc-ddd-example/interfaces/rpc/user"
+	//rpc_user "github.com/tozastation/go-grpc-ddd-example/interfaces/rpc/user"
 	rpc_weather "github.com/tozastation/go-grpc-ddd-example/interfaces/rpc/weather"
 	"log"
 	"net"
