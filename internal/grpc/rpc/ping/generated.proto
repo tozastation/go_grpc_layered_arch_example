@@ -1,0 +1,13 @@
+syntax = 'proto3';
+package ping;
+option go_package = "github.com/tozastation/go_grpc_layered_arch_example/internal/grpc/rpc/ping";
+
+import "google/protobuf/empty.proto";
+
+service PingService {
+    rpc Ping (google.protobuf.Empty) returns (PingResponse) {}
+}
+
+message PingResponse {
+    string reply = 1;
+}

@@ -22,4 +22,6 @@
 !.vscode/launch.json
 !.vscode/extensions.json
 
+.idea
+
 

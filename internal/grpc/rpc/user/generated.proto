@@ -1,0 +1,42 @@
+syntax = "proto3";
+package user;
+option go_package = "github.com/tozastation/go_grpc_layered_arch_example/internal/grpc/rpc/user";
+
+import "google/protobuf/empty.proto";
+
+service UserService {
+    rpc Read (ReadRequest) returns (ReadResponse) {}
+    rpc Create (CreateRequest) returns (google.protobuf.Empty) {}
+    rpc Login (LoginRequest) returns (LoginResponse) {}
+}
+
+// Base Model
+message ReadUser {
+    // UUID
+    string id = 1;
+    string name = 2;
+    string address = 3;
+}
+message WriteUser {
+    // UUID
+    string id = 1;
+    string name = 2;
+    string address = 3;
+    string password = 4;
+}
+
+// Req, Resp
+// Read Usecase
+message ReadRequest {
+    string id = 1;
+}
+message ReadResponse {
+    ReadUser user = 1;
+}
+// Create Usecase
+message CreateRequest {
+    WriteUser user = 1;
+}
+// Login Usecase
+message LoginRequest {}
+message LoginResponse {}
